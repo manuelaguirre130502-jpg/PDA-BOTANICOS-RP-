@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101014">
+<meta name="description" content="PDA policial BOTANICOS RP">
+<title>BOTANICOS | Police Operations</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg:#0b0c10;
+  --surface:#12141a;
+  --panel:#181a22;
+  --panel2:#20232d;
+  --border:#2c303b;
+  --red:#e11d35;
+  --red2:#ff465b;
+  --text:#f5f6fa;
+  --muted:#969cab;
+  --green:#38d996;
+  --amber:#ffc45c;
+  --radius:14px;
+  --shadow:0 15px 45px #0005;
+}
+* { box-sizing:border-box }
+body {
+  margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button,input,select,textarea { font:inherit }
+button { cursor:pointer }
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible {
+  outline:2px solid var(--red2); outline-offset:2px;
+}
+button:disabled { opacity:.55; cursor:wait }
+.hidden { display:none!important }
+.muted { color:var(--muted) }
+.small { font-size:12px }
+.red { color:var(--red2) }
+
+.topbar {
+  height:76px; display:flex; align-items:center; justify-content:space-between;
+  gap:18px; padding:0 28px; background:#111218;
+  border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10;
+}
+.brand { display:flex; align-items:center; gap:12px; min-width:0 }
+.brand-mark {
+  width:42px; height:42px; display:grid; place-items:center;
+  background:linear-gradient(145deg,#f02b43,#801120);
+  border-radius:12px; font-size:23px; box-shadow:0 5px 20px #e11d3530;
+}
+.brand h1 { margin:0; font-size:17px; letter-spacing:2px }
+.brand p { margin:4px 0 0; color:var(--muted); font-size:10px; letter-spacing:1.6px }
+.top-actions { display:flex; align-items:center; gap:10px }
+.status-pill {
+  display:flex; align-items:center; gap:7px; border:1px solid var(--border);
+  border-radius:30px; padding:8px 11px; color:var(--muted); font-size:12px;
+}
+.dot { width:7px; height:7px; background:var(--green); border-radius:50% }
+.btn {
+  border:1px solid var(--border); border-radius:9px; padding:10px 13px;
+  background:var(--panel2); color:var(--text); font-weight:650;
+  transition:filter .15s,transform .15s;
+}
+.btn:hover { filter:brightness(1.18) }
+.btn:active { transform:scale(.98) }
+.btn-primary { background:var(--red); border-color:var(--red); color:white }
+.btn-danger { color:#ff8490; background:#35171d; border-color:#57232c }
+.btn-quiet { background:transparent }
+.btn-sm { padding:7px 9px; font-size:12px }
+
+.login-wrap {
+  min-height:calc(100vh - 76px); display:grid; place-items:center; padding:24px;
+  background:radial-gradient(ellipse at 50% 0%,#53131e44,transparent 55%);
+}
+.login-card {
+  width:min(100%,430px); padding:30px; border:1px solid var(--border);
+  border-radius:20px; background:var(--surface); box-shadow:var(--shadow);
+}
+.login-emblem {
+  width:58px; height:58px; display:grid; place-items:center; font-size:30px;
+  background:#32131a; border:1px solid #64212d; border-radius:16px; margin-bottom:20px;
+}
+.login-card h2 { margin:0 0 8px; font-size:26px }
+.login-card p { line-height:1.6 }
+.field { display:grid; gap:7px; margin-bottom:14px }
+.field label { color:#d9dce5; font-size:12px; font-weight:650 }
+.field input,.field select,.field textarea,.toolbar input {
+  width:100%; min-width:0; padding:12px 13px; color:var(--text);
+  background:#0d0f14; border:1px solid var(--border); border-radius:9px;
+}
+.field textarea { min-height:95px; resize:vertical }
+.field input:focus,.field select:focus,.field textarea:focus,.toolbar input:focus {
+  border-color:var(--red2); outline:none;
+}
+.login-card form .btn { width:100%; margin-top:5px }
+.message { margin-top:14px; color:var(--amber); font-size:13px; line-height:1.5 }
+
+.shell { display:grid; grid-template-columns:245px minmax(0,1fr); min-height:calc(100vh - 76px) }
+.sidebar {
+  padding:22px 14px; background:#101116; border-right:1px solid var(--border);
+  display:flex; flex-direction:column; gap:8px;
+}
+.side-label { margin:8px 10px; color:#6f7584; font-size:10px; font-weight:800; letter-spacing:1.6px }
+.nav-btn {
+  display:flex; align-items:center; gap:12px; width:100%; padding:12px;
+  color:#aeb3c1; background:transparent; border:1px solid transparent;
+  border-radius:10px; text-align:left; font-size:13px; font-weight:650;
+}
+.nav-btn:hover { background:#ffffff08; color:white }
+.nav-btn.active { background:#3a151d; color:white; border-color:#63212d }
+.nav-icon { width:22px; text-align:center; font-size:16px }
+.sidebar-footer { margin-top:auto; padding:13px; border:1px solid var(--border); border-radius:12px }
+.agent-line { display:flex; gap:10px; align-items:center; min-width:0 }
+.avatar {
+  flex-shrink:0; width:37px; height:37px; display:grid; place-items:center;
+  border-radius:11px; background:#30202a; color:#ff8290; font-weight:800;
+}
+.agent-info { min-width:0 }
+.agent-info strong { display:block; font-size:12px; overflow-wrap:anywhere }
+.agent-info span { display:block; color:var(--muted); font-size:11px; margin-top:4px }
+
+.content { min-width:0; padding:28px; max-width:1600px; width:100%; margin:0 auto }
+.page { display:none }
+.page.active { display:block }
+.page-heading {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:18px; margin-bottom:24px;
+}
+.page-heading h2 { font-size:26px; margin:0 0 7px; letter-spacing:-.5px }
+.page-heading p { margin:0; color:var(--muted); font-size:13px; line-height:1.5 }
+.eyebrow { color:var(--red2); font-size:10px; font-weight:800; letter-spacing:2px; margin-bottom:8px }
+.stats {
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:15px; margin-bottom:22px;
+}
+.stat {
+  position:relative; overflow:hidden; padding:19px;
+  background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+}
+.stat:after {
+  content:""; position:absolute; width:90px; height:90px; border-radius:50%;
+  background:#e11d3510; right:-32px; top:-35px;
+}
+.stat-top { display:flex; align-items:center; justify-content:space-between; gap:10px }
+.stat-label { color:var(--muted); font-size:12px }
+.stat-icon { font-size:18px }
+.stat-number { margin-top:14px; font-size:30px; font-weight:800; letter-spacing:-1px }
+.stat-note { margin-top:6px; color:var(--muted); font-size:11px }
+.grid-2 { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr); gap:16px }
+.panel { min-width:0; padding:20px; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius) }
+.panel-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px }
+.panel-head h3 { margin:0; font-size:14px }
+.panel-head span { color:var(--muted); font-size:11px }
+.activity { display:grid; gap:0 }
+.activity-item { display:flex; align-items:flex-start; gap:12px; padding:13px 0; border-bottom:1px solid var(--border) }
+.activity-item:last-child { border-bottom:0 }
+.activity-symbol { flex-shrink:0; width:34px; height:34px; display:grid; place-items:center; background:#2b171e; border-radius:10px }
+.activity-text { min-width:0; overflow-wrap:anywhere }
+.activity-text strong { display:block; font-size:12px; font-weight:700 }
+.activity-text p { margin:5px 0 0; color:var(--muted); font-size:11px; line-height:1.5 }
+.empty { padding:28px 10px; text-align:center; color:var(--muted); font-size:13px }
+.empty-icon { font-size:26px; margin-bottom:8px }
+
+.toolbar { display:flex; align-items:center; gap:10px; margin-bottom:15px; flex-wrap:wrap }
+.toolbar input { flex:1; min-width:180px; max-width:460px }
+.table-panel { padding:0; overflow:hidden }
+.table-wrap { overflow:auto; max-width:100% }
+table { width:100%; border-collapse:collapse; min-width:650px; font-size:12px }
+thead { background:#20222b }
+th { padding:13px 15px; text-align:left; color:#aeb3c1; font-size:10px; letter-spacing:.8px; text-transform:uppercase; white-space:nowrap }
+td { padding:14px 15px; border-top:1px solid var(--border); vertical-align:top; max-width:280px; overflow-wrap:anywhere; line-height:1.5 }
+tbody tr:hover { background:#ffffff04 }
+.cell-title { font-weight:700; color:#f6f6f8 }
+.cell-sub { display:block; margin-top:4px; color:var(--muted); font-size:11px }
+.tag { display:inline-flex; align-items:center; padding:5px 8px; border-radius:30px; font-size:10px; font-weight:750; background:#272a35; color:#d6d9e2 }
+.tag-red { color:#ff9aa5; background:#3a171f }
+.tag-green { color:#8cf0c6; background:#123429 }
+.tag-amber { color:#ffda8c; background:#392c17 }
+.row-actions { display:flex; gap:6px }
+.form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 14px }
+.span-2 { grid-column:1/-1 }
+.form-panel { margin-bottom:18px }
+.form-panel form { margin:0 }
+.form-footer { display:flex; gap:9px; flex-wrap:wrap; margin-top:6px }
+.notice { padding:13px 15px; border:1px solid #634b22; background:#2c2417; border-radius:10px; color:#ffda8c; font-size:12px; line-height:1.6; margin-bottom:18px }
+.toast-area { position:fixed; right:20px; bottom:20px; z-index:30; display:grid; gap:9px; width:min(360px,calc(100% - 40px)) }
+.toast { background:#20232d; border:1px solid var(--border); border-left:4px solid var(--green); border-radius:10px; padding:14px 16px; box-shadow:var(--shadow); font-size:13px; line-height:1.5 }
+.toast.error { border-left-color:var(--red2) }
+.footer-note { color:#656b79; font-size:10px; margin-top:24px; line-height:1.7 }
+
+@media(max-width:1100px) {
+  .stats { grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .grid-2 { grid-template-columns:1fr }
+}
+@media(max-width:760px) {
+  .topbar { height:68px; padding:0 14px }
+  .brand h1 { font-size:14px }
+  .brand p { font-size:8px; letter-spacing:1px }
+  .status-pill { display:none }
+  .shell { display:block; min-height:calc(100vh - 68px) }
+  .sidebar {
+    padding:9px; display:flex; flex-direction:row; overflow-x:auto;
+    border-right:0; border-bottom:1px solid var(--border); gap:6px;
+  }
+  .side-label,.sidebar-footer { display:none }
+  .nav-btn { width:auto; min-width:max-content; padding:10px; font-size:11px }
+  .nav-icon { width:auto }
+  .content { padding:18px 12px }
+  .page-heading h2 { font-size:22px }
+  .page-heading { align-items:flex-start }
+  .stats { gap:9px }
+  .stat { padding:13px }
+  .stat-number { font-size:25px }
+  .panel { padding:14px }
+}
+@media(max-width:440px) {
+  .form-grid { grid-template-columns:1fr }
+  .span-2 { grid-column:auto }
+  .top-actions .btn { padding:8px; font-size:11px }
+  .brand-mark { width:36px; height:36px }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">🛡️</div>
+    <div>
+      <h1>BOTANICOS <span class="red">PDA</span></h1>
+      <p>POLICE OPERATIONS SYSTEM</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <div class="status-pill"><span class="dot"></span><span id="connectionLabel">Sistema iniciado</span></div>
+    <button id="topLogout" class="btn btn-quiet hidden">Salir ↗</button>
+  </div>
+</header>
+
+<section id="loginView" class="login-wrap">
+  <div class="login-card">
+    <div class="login-emblem">🚔</div>
+    <div class="eyebrow">LOS SANTOS POLICE DEPARTMENT</div>
+    <h2>Acceso al sistema</h2>
+    <p class="muted">Identifícate con las credenciales asignadas por el administrador de BOTANICOS.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="email">CORREO ELECTRÓNICO</label>
+        <input id="email" type="email" autocomplete="username" placeholder="agente@ejemplo.com" required>
+      </div>
+      <div class="field">
+        <label for="password">CONTRASEÑA</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="Tu contraseña" required>
+      </div>
+      <button id="loginButton" class="btn btn-primary" type="submit">Iniciar sesión →</button>
+    </form>
+    <button id="forgotPassword" class="btn btn-quiet" style="width:100%">¿Olvidaste tu contraseña?</button>
+    <div id="loginMessage" class="message" role="status"></div>
+    <p class="small muted">Acceso exclusivo para personal autorizado. Sistema de roleplay.</p>
+  </div>
+</section>
+
+<div id="appView" class="shell hidden">
+  <aside class="sidebar">
+    <div class="side-label">MENÚ PRINCIPAL</div>
+    <button class="nav-btn active" data-page="dashboard"><span class="nav-icon">▦</span> Panel general</button>
+    <button class="nav-btn" data-page="ciudadanos"><span class="nav-icon">♙</span> Ciudadanos</button>
+    <button class="nav-btn" data-page="detenciones"><span class="nav-icon">⚖</span> Detenciones</button>
+    <button class="nav-btn" data-page="multas"><span class="nav-icon">＄</span> Multas</button>
+    <button class="nav-btn" data-page="informes"><span class="nav-icon">▤</span> Informes</button>
+    <div class="sidebar-footer">
+      <div class="agent-line">
+        <div id="avatar" class="avatar">B</div>
+        <div class="agent-info">
+          <strong id="agentName">Agente</strong>
+          <span id="agentRole">Personal policial</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <section id="page-dashboard" class="page active">
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">CENTRO DE OPERACIONES</div>
+          <h2>Panel general</h2>
+          <p>Resumen de actividad policial de BOTANICOS RP.</p>
+        </div>
+        <span id="todayLabel" class="tag"></span>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-top"><span class="stat-label">Ciudadanos</span><span class="stat-icon">♙</span></div><div id="stat-ciudadanos" class="stat-number">—</div><div class="stat-note">Registros compartidos</div></div>
+        <div class="stat"><div class="stat-top"><span class="stat-label">Detenciones</span><span class="stat-icon">⚖</span></div><div id="stat-detenciones" class="stat-number">—</div><div class="stat-note">Actuaciones registradas</div></div>
+        <div class="stat"><div class="stat-top"><span class="stat-label">Multas</span><span class="stat-icon">＄</span></div><div id="stat-multas" class="stat-number">—</div><div class="stat-note">Total de sanciones</div></div>
+        <div class="stat"><div class="stat-top"><span class="stat-label">Informes</span><span class="stat-icon">▤</span></div><div id="stat-informes" class="stat-number">—</div><div class="stat-note">Documentos registrados</div></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><h3>Actividad reciente</h3><span>Tiempo real</span></div>
+          <div id="recentActivity" class="activity"><div class="empty">Cargando actividad...</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Estado del sistema</h3><span class="tag tag-green">PDA</span></div>
+          <div class="activity-item"><div class="activity-symbol">☁</div><div class="activity-text"><strong>Base de datos</strong><p id="databaseStatus">Comprobando conexión...</p></div></div>
+          <div class="activity-item"><div class="activity-symbol">♙</div><div class="activity-text"><strong>Cuenta activa</strong><p id="accountStatus">Verificando permisos...</p></div></div>
+          <div class="activity-item"><div class="activity-symbol">🔒</div><div class="activity-text"><strong>Acceso protegido</strong><p>El acceso depende de las reglas de seguridad de Firebase.</p></div></div>
+          <p class="footer-note">BOTANICOS PDA · SISTEMA DE ROLEPLAY<br>Los registros representan actuaciones ficticias del servidor.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-ciudadanos" class="page">
+      <div class="page-heading"><div><div class="eyebrow">BASE DE DATOS CIVIL</div><h2>Ciudadanos</h2><p>Registro de personajes y antecedentes del roleplay.</p></div></div>
+      <div id="notice-ciudadanos" class="notice hidden"></div>
+      <div class="panel form-panel">
+        <div class="panel-head"><h3>＋ Nuevo ciudadano</h3><span>Formulario de registro</span></div>
+        <form id="form-ciudadanos" class="form-grid">
+          <div class="field"><label>Nombre del personaje *</label><input name="nombre" maxlength="100" required></div>
+          <div class="field"><label>ID del personaje *</label><input name="identificacion" maxlength="40" required></div>
+          <div class="field"><label>Ocupación</label><input name="ocupacion" maxlength="80"></div>
+          <div class="field"><label>Estado</label><select name="estado"><option>Activo</option><option>Buscado</option><option>Detenido</option></select></div>
+          <div class="field span-2"><label>Antecedentes y observaciones</label><textarea name="observaciones" maxlength="1500"></textarea></div>
+          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Guardar ciudadano</button></div>
+        </form>
+      </div>
+      <div class="toolbar"><input id="search-ciudadanos" placeholder="Buscar por nombre, ID u ocupación..."><button class="btn" data-export="ciudadanos">Exportar CSV ↓</button></div>
+      <div class="panel table-panel"><div class="table-wrap" id="table-ciudadanos"></div></div>
+    </section>
+
+    <section id="page-detenciones" class="page">
+      <div class="page-heading"><div><div class="eyebrow">REGISTRO DE ACTUACIONES</div><h2>Detenciones</h2><p>Detenciones, motivos, agentes responsables y traslados.</p></div></div>
+      <div class="panel form-panel">
+        <div class="panel-head"><h3>＋ Nueva detención</h3><span>Informe de actuación</span></div>
+        <form id="form-detenciones" class="form-grid">
+          <div class="field"><label>Nombre del detenido *</label><input name="nombre" maxlength="100" required></div>
+          <div class="field"><label>ID del personaje</label><input name="identificacion" maxlength="40"></div>
+          <div class="field"><label>Agente responsable *</label><input name="agente" maxlength="100" required></div>
+          <div class="field"><label>Motivo *</label><input name="motivo" maxlength="300" required></div>
+          <div class="field"><label>Destino</label><select name="destino"><option>Comisaría</option><option>Federal</option><option>Libertad</option></select></div>
+          <div class="field"><label>Estado del caso</label><select name="estado"><option>Procesado</option><option>En investigación</option><option>Trasladado</option><option>Liberado</option></select></div>
+          <div class="field span-2"><label>Detalles y evidencias del roleplay</label><textarea name="detalles" maxlength="2500"></textarea></div>
+          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Registrar detención</button></div>
+        </form>
+      </div>
+      <div class="toolbar"><input id="search-detenciones" placeholder="Buscar detenido, agente o motivo..."><button class="btn" data-export="detenciones">Exportar CSV ↓</button></div>
+      <div class="panel table-panel"><div class="table-wrap" id="table-detenciones"></div></div>
+    </section>
+
+    <section id="page-multas" class="page">
+      <div class="page-heading"><div><div class="eyebrow">CONTROL DE SANCIONES</div><h2>Multas</h2><p>Registro de sanciones económicas dentro del servidor.</p></div></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-top"><span class="stat-label">Multas registradas</span><span>＄</span></div><div id="fine-count" class="stat-number">0</div><div class="stat-note">Total de registros</div></div>
+        <div class="stat"><div class="stat-top"><span class="stat-label">Importe acumulado</span><span>▤</span></div><div id="fine-total" class="stat-number">0</div><div class="stat-note">Moneda del roleplay</div></div>
+      </div>
+      <div class="panel form-panel">
+        <div class="panel-head"><h3>＋ Nueva multa</h3><span>Registro de sanción</span></div>
+        <form id="form-multas" class="form-grid">
+          <div class="field"><label>Nombre del infractor *</label><input name="nombre" maxlength="100" required></div>
+          <div class="field"><label>ID del personaje</label><input name="identificacion" maxlength="40"></div>
+          <div class="field"><label>Importe ($) *</label><input name="importe" type="number" min="1" max="100000000" step="1" required></div>
+          <div class="field"><label>Agente responsable *</label><input name="agente" maxlength="100" required></div>
+          <div class="field span-2"><label>Motivo de la sanción *</label><textarea name="motivo" maxlength="1000" required></textarea></div>
+          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Registrar multa</button></div>
+        </form>
+      </div>
+      <div class="toolbar"><input id="search-multas" placeholder="Buscar infractor, agente o motivo..."><button class="btn" data-export="multas">Exportar CSV ↓</button></div>
+      <div class="panel table-panel"><div class="table-wrap" id="table-multas"></div></div>
+    </section>
+
+    <section id="page-informes" class="page">
+      <div class="page-heading"><div><div class="eyebrow">DOCUMENTACIÓN POLICIAL</div><h2>Informes</h2><p>Actuaciones, investigaciones e incidencias del roleplay.</p></div></div>
+      <div class="panel form-panel">
+        <div class="panel-head"><h3>＋ Nuevo informe</h3><span>Documento de actuación</span></div>
+        <form id="form-informes" class="form-grid">
+          <div class="field"><label>Título del informe *</label><input name="titulo" maxlength="150" required></div>
+          <div class="field"><label>Agente responsable *</label><input name="agente" maxlength="100" required></div>
+          <div class="field"><label>Tipo de informe</label><select name="tipo"><option>Actuación policial</option><option>Investigación</option><option>Incidente</option><option>Traslado federal</option><option>Incautación</option></select></div>
+          <div class="field"><label>Referencia del caso</label><input name="referencia" maxlength="50" placeholder="Ej. BTP-001"></div>
+          <div class="field span-2"><label>Descripción de los hechos *</label><textarea name="descripcion" maxlength="4000" required></textarea></div>
+          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Guardar informe</button></div>
+        </form>
+      </div>
+      <div class="toolbar"><input id="search-informes" placeholder="Buscar título, agente o referencia..."><button class="btn" data-export="informes">Exportar CSV ↓</button></div>
+      <div class="panel table-panel"><div class="table-wrap" id="table-informes"></div></div>
+    </section>
+  </main>
+</div>
+
+<div id="toastArea" class="toast-area" aria-live="polite"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+// =========================================================
+// CONFIGURACIÓN: sustituye estos valores por los de Firebase
+// =========================================================
+const firebaseConfig = {
+  apiKey: "PEGA_TU_API_KEY",
+  authDomain: "PEGA_TU_AUTH_DOMAIN",
+  projectId: "PEGA_TU_PROJECT_ID",
+  appId: "PEGA_TU_APP_ID"
+};
+
+// No añadas contraseñas ni claves privadas aquí.
+const CONFIG_INCOMPLETA = Object.values(firebaseConfig).some(
+  v => !v || v.startsWith("PEGA_TU_")
+);
+
+const MODELOS = {
+  ciudadanos: {
+    label:"Ciudadanos", icon:"♙",
+    fields:[
+      ["nombre","Nombre"],["identificacion","ID"],
+      ["ocupacion","Ocupación"],["estado","Estado"],
+      ["observaciones","Observaciones"]
+    ],
+    search:["nombre","identificacion","ocupacion","estado","observaciones"]
+  },
+  detenciones: {
+    label:"Detenciones", icon:"⚖",
+    fields:[
+      ["nombre","Detenido"],["identificacion","ID"],
+      ["agente","Agente"],["motivo","Motivo"],
+      ["destino","Destino"],["estado","Estado"],["detalles","Detalles"]
+    ],
+    search:["nombre","identificacion","agente","motivo","destino","estado"]
+  },
+  multas: {
+    label:"Multas", icon:"＄",
+    fields:[
+      ["nombre","Infractor"],["identificacion","ID"],
+      ["importe","Importe ($)"],["agente","Agente"],["motivo","Motivo"]
+    ],
+    search:["nombre","identificacion","agente","motivo"]
+  },
+  informes: {
+    label:"Informes", icon:"▤",
+    fields:[
+      ["titulo","Título"],["agente","Agente"],["tipo","Tipo"],
+      ["referencia","Referencia"],["descripcion","Descripción"]
+    ],
+    search:["titulo","agente","tipo","referencia","descripcion"]
+  }
+};
+
+let auth = null;
+let db = null;
+let usuario = null;
+let perfil = null;
+let unsubscribers = [];
+let datos = {ciudadanos:[],detenciones:[],multas:[],informes:[]};
+let busy = false;
+
+const $ = id => document.getElementById(id);
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function toast(message, error=false) {
+  const node = document.createElement("div");
+  node.className = "toast" + (error ? " error" : "");
+  node.textContent = message;
+  $("toastArea").appendChild(node);
+  setTimeout(() => node.remove(), 4500);
+}
+function formatDate(value) {
+  if (!value) return "Pendiente";
+  const d = value.toDate ? value.toDate() : new Date(value);
+  return Number.isNaN(d.getTime()) ? "—" : d.toLocaleString("es-MX");
+}
+function formatMoney(value) {
+  return new Intl.NumberFormat("es-MX",{
+    maximumFractionDigits:0
+  }).format(Number(value)||0);
+}
+function roleName(role) {
+  return role === "admin" ? "Administrador" : "Agente policial";
+}
+function setConnection(text, online=false) {
+  $("connectionLabel").textContent = text;
+  const dot = document.querySelector(".status-pill .dot");
+  dot.style.background = online ? "var(--green)" : "var(--amber)";
+}
+function stopListeners() {
+  unsubscribers.forEach(unsub => unsub());
+  unsubscribers = [];
+}
+function showLogin(message="") {
+  stopListeners();
+  usuario = null;
+  perfil = null;
+  $("loginView").classList.remove("hidden");
+  $("appView").classList.add("hidden");
+  $("topLogout").classList.add("hidden");
+  $("loginMessage").textContent = message;
+  setConnection("Sin sesión",false);
+}
+function showApp() {
+  $("loginView").classList.add("hidden");
+  $("appView").classList.remove("hidden");
+  $("topLogout").classList.remove("hidden");
+  const name = perfil.nombre || usuario.email || "Agente";
+  $("agentName").textContent = name;
+  $("agentRole").textContent = roleName(perfil.role);
+  $("avatar").textContent = name.trim().charAt(0).toUpperCase() || "B";
+  $("accountStatus").textContent = name + " · " + roleName(perfil.role);
+  $("todayLabel").textContent = new Date().toLocaleDateString("es-MX");
+  setConnection("Conectando...",false);
+  subscribeCollections();
+}
+function goToPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  $("page-"+page).classList.add("active");
+  document.querySelectorAll("[data-page]").forEach(b => b.classList.toggle("active",b.dataset.page===page));
+}
+document.querySelectorAll("[data-page]").forEach(btn => {
+  btn.addEventListener("click", () => goToPage(btn.dataset.page));
+});
+$("topLogout").addEventListener("click", () => auth && auth.signOut());
+$("forgotPassword").addEventListener("click", async () => {
+  const email = $("email").value.trim();
+  if (!email) return toast("Escribe tu correo electrónico primero.",true);
+  try {
+    await auth.sendPasswordResetEmail(email);
+    toast("Solicitud procesada. Si la cuenta existe, recibirás instrucciones.");
+  } catch (e) {
+    toast("No se pudo enviar el correo. Revisa la configuración de Firebase.",true);
+  }
+});
+$("loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (CONFIG_INCOMPLETA) {
+    $("loginMessage").textContent = "Falta configurar Firebase en el código.";
+    return;
+  }
+  const button = $("loginButton");
+  button.disabled = true;
+  button.textContent = "Verificando...";
+  try {
+    await auth.signInWithEmailAndPassword($("email").value.trim(),$("password").value);
+    $("loginMessage").textContent = "";
+  } catch (err) {
+    $("loginMessage").textContent = "No se pudo iniciar sesión. Comprueba las credenciales y la configuración.";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Iniciar sesión →";
+  }
+});
+
+function subscribeCollections() {
+  stopListeners();
+  Object.keys(MODELOS).forEach(type => {
+    const unsubscribe = db.collection(type)
+      .orderBy("createdAt","desc")
+      .limit(500)
+      .onSnapshot(snapshot => {
+        datos[type] = snapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
+        renderTable(type);
+        renderStats();
+        renderActivity();
+        $("databaseStatus").textContent = "Conectada · datos sincronizados";
+        setConnection("En línea",true);
+      }, err => {
+        console.error("Firestore "+type,err);
+        $("databaseStatus").textContent = "No se pudo consultar "+MODELOS[type].label+". Revisa las reglas.";
+        setConnection("Error de datos",false);
+        toast("Error al cargar "+MODELOS[type].label+".",true);
+      });
+    unsubscribers.push(unsubscribe);
+  });
+}
+
+function renderStats() {
+  Object.keys(MODELOS).forEach(type => {
+    $("stat-"+type).textContent = datos[type].length;
+  });
+  $("fine-count").textContent = datos.multas.length;
+  const total = datos.multas.reduce((sum,r)=>sum+(Number(r.importe)||0),0);
+  $("fine-total").textContent = "$"+formatMoney(total);
+}
+function renderActivity() {
+  const items = Object.keys(MODELOS)
+    .flatMap(type => datos[type].map(r => ({...r,_type:type})))
+    .sort((a,b) => {
+      const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+      const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+      return tb-ta;
+    }).slice(0,7);
+  const target = $("recentActivity");
+  if (!items.length) {
+    target.innerHTML = '<div class="empty"><div class="empty-icon">▤</div>No hay actividad registrada todavía.</div>';
+    return;
+  }
+  target.innerHTML = items.map(r => {
+    const type = MODELOS[r._type];
+    const title = r.nombre || r.titulo || type.label;
+    const detail = r.motivo || r.tipo || r.ocupacion || r.destino || "";
+    return '<div class="activity-item"><div class="activity-symbol">'+type.icon+
+      '</div><div class="activity-text"><strong>'+escapeHTML(type.label)+
+      ' · '+escapeHTML(title)+'</strong><p>'+escapeHTML(detail)+
+      ' · '+escapeHTML(formatDate(r.createdAt))+'</p></div></div>';
+  }).join("");
+}
+
+function filteredRows(type) {
+  const q = ($("search-"+type)?.value || "").trim().toLocaleLowerCase("es");
+  const fields = MODELOS[type].search;
+  return datos[type].filter(row => !q || fields.some(f =>
+    String(row[f] ?? "").toLocaleLowerCase("es").includes(q)
+  ));
+}
+function renderTable(type) {
+  const model = MODELOS[type];
+  const rows = filteredRows(type);
+  const target = $("table-"+type);
+  if (!rows.length) {
+    target.innerHTML = '<div class="empty"><div class="empty-icon">'+model.icon+
+      '</div>No se encontraron registros.</div>';
+    return;
+  }
+  let html = "<table><thead><tr>";
+  model.fields.forEach(([,label]) => html += "<th>"+escapeHTML(label)+"</th>");
+  html += "<th>Fecha</th><th>Agente que registró</th>";
+  if (perfil.role === "admin") html += "<th>Acciones</th>";
+  html += "</tr></thead><tbody>";
+  rows.forEach(row => {
+    html += "<tr>";
+    model.fields.forEach(([field]) => {
+      let value = row[field];
+      if (field === "importe") value = "$"+formatMoney(value);
+      if (field === "estado") {
+        html += '<td><span class="tag '+(value==="Activo"||value==="Procesado"?"tag-green":value==="Buscado"?"tag-red":"")+'">'+escapeHTML(value||"—")+"</span></td>";
+      } else {
+        html += "<td>"+escapeHTML(value || "—")+"</td>";
+      }
+    });
+    html += "<td>"+escapeHTML(formatDate(row.createdAt))+"</td>";
+    html += "<td>"+escapeHTML(row.createdByEmail || "—")+"</td>";
+    if (perfil.role === "admin") {
+      html += '<td><div class="row-actions"><button class="btn btn-danger btn-sm" data-delete="'+type+'" data-id="'+escapeHTML(row.id)+'">Eliminar</button></div></td>';
+    }
+    html += "</tr>";
+  });
+  target.innerHTML = html+"</tbody></table>";
+}
+
+Object.keys(MODELOS).forEach(type => {
+  $("search-"+type).addEventListener("input",()=>renderTable(type));
+  $("form-"+type).addEventListener("submit",async e => {
+    e.preventDefault();
+    if (!usuario || !perfil || busy) return;
+    const form = e.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    const raw = Object.fromEntries(new FormData(form).entries());
+    const data = {};
+    MODELOS[type].fields.forEach(([key]) => {
+      if (key in raw) data[key] = String(raw[key]).trim();
+    });
+    if (type === "multas") {
+      const amount = Number(data.importe);
+      if (!Number.isSafeInteger(amount) || amount < 1 || amount > 100000000) {
+        toast("El importe debe ser un número entero válido.",true);
+        return;
+      }
+      data.importe = amount;
+    }
+    const required = {
+      ciudadanos:["nombre","identificacion"],
+      detenciones:["nombre","agente","motivo"],
+      multas:["nombre","agente","motivo","importe"],
+      informes:["titulo","agente","descripcion"]
+    }[type];
+    if (required.some(k => data[k] === undefined || data[k] === "")) {
+      toast("Completa todos los campos obligatorios.",true);
+      return;
+    }
+    busy = true;
+    button.disabled = true;
+    try {
+      await db.collection(type).add({
+        ...data,
+        createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+        createdBy:usuario.uid,
+        createdByEmail:usuario.email || ""
+      });
+      form.reset();
+      toast(MODELOS[type].label+" guardado correctamente.");
+    } catch (err) {
+      console.error(err);
+      toast("No se pudo guardar. Comprueba tu acceso y las reglas de Firestore.",true);
+    } finally {
+      busy = false;
+      button.disabled = false;
+    }
+  });
+});
+
+document.addEventListener("click",async e => {
+  const btn = e.target.closest("[data-delete]");
+  if (!btn) return;
+  if (!perfil || perfil.role !== "admin") {
+    toast("Solo un administrador puede eliminar registros.",true);
+    return;
+  }
+  const type = btn.dataset.delete;
+  const id = btn.dataset.id;
+  if (!MODELOS[type] || !id) return;
+  if (!confirm("¿Eliminar este registro permanentemente? Esta acción no se puede deshacer.")) return;
+  btn.disabled = true;
+  try {
+    await db.collection(type).doc(id).delete();
+    toast("Registro eliminado.");
+  } catch (err) {
+    console.error(err);
+    toast("No se pudo eliminar. Revisa los permisos.",true);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+function exportCSV(type) {
+  const model = MODELOS[type];
+  const rows = filteredRows(type);
+  if (!rows.length) return toast("No hay registros para exportar.",true);
+  const columns = [...model.fields.map(([key,label])=>[key,label]),["createdAt","Fecha"],["createdByEmail","Agente que registró"]];
+  const quote = value => '"'+String(value ?? "").replace(/"/g,'""')+'"';
+  const lines = [
+    columns.map(([,label])=>quote(label)).join(","),
+    ...rows.map(row => columns.map(([key]) =>
+      quote(key==="createdAt" ? formatDate(row[key]) : row[key])
+    ).join(","))
+  ];
+  const blob = new Blob(["\uFEFF"+lines.join("\r\n")],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "BOTANICOS_"+type+"_"+new Date().toISOString().slice(0,10)+".csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast("Exportación CSV preparada.");
+}
+document.querySelectorAll("[data-export]").forEach(btn => {
+  btn.addEventListener("click",()=>exportCSV(btn.dataset.export));
+});
+
+if (CONFIG_INCOMPLETA) {
+  $("loginMessage").textContent = "Configuración pendiente: añade los valores de Firebase para activar el acceso.";
+  $("databaseStatus").textContent = "Pendiente de configuración";
+} else {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+
+    auth.onAuthStateChanged(async user => {
+      stopListeners();
+      usuario = user;
+      perfil = null;
+      if (!user) {
+        showLogin();
+        return;
+      }
+      try {
+        const doc = await db.collection("users").doc(user.uid).get();
+        const data = doc.data();
+        if (!doc.exists || !data || data.active !== true ||
+            !["admin","officer"].includes(data.role)) {
+          await auth.signOut();
+          showLogin("Esta cuenta no tiene autorización. Contacta al administrador.");
+          return;
+        }
+        perfil = data;
+        showApp();
+      } catch (err) {
+        console.error(err);
+        await auth.signOut();
+        showLogin("No se pudieron verificar los permisos. Comprueba las reglas de Firebase.");
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    $("loginMessage").textContent = "No se pudo iniciar Firebase. Revisa firebaseConfig.";
+  }
+}
+</script>
+</body>
+</html>
