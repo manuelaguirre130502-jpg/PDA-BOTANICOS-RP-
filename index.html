@@ -3,801 +3,664 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101014">
-<meta name="description" content="PDA policial BOTANICOS RP">
-<title>BOTANICOS | Police Operations</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0c0f">
+<title>BOTANICOS RP | PDA Policial</title>
 <style>
 :root {
-  color-scheme: dark;
-  --bg:#0b0c10;
-  --surface:#12141a;
-  --panel:#181a22;
-  --panel2:#20232d;
-  --border:#2c303b;
-  --red:#e11d35;
-  --red2:#ff465b;
-  --text:#f5f6fa;
-  --muted:#969cab;
-  --green:#38d996;
-  --amber:#ffc45c;
-  --radius:14px;
-  --shadow:0 15px 45px #0005;
+  --bg:#0b0c0f;
+  --panel:#14161c;
+  --line:#2b2e37;
+  --red:#e63946;
+  --text:#f4f5f7;
+  --muted:#969ba8;
 }
 * { box-sizing:border-box }
 body {
-  margin:0; min-height:100vh; background:var(--bg); color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:14px Arial,sans-serif;
 }
 button,input,select,textarea { font:inherit }
 button { cursor:pointer }
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible {
-  outline:2px solid var(--red2); outline-offset:2px;
+button:focus-visible,input:focus-visible,
+textarea:focus-visible,select:focus-visible {
+  outline:2px solid #ff6470;
+  outline-offset:2px;
 }
-button:disabled { opacity:.55; cursor:wait }
 .hidden { display:none!important }
-.muted { color:var(--muted) }
-.small { font-size:12px }
-.red { color:var(--red2) }
-
-.topbar {
-  height:76px; display:flex; align-items:center; justify-content:space-between;
-  gap:18px; padding:0 28px; background:#111218;
-  border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10;
+button,.btn {
+  border:1px solid var(--line);
+  background:#20232b;
+  color:white;
+  padding:11px 14px;
+  border-radius:9px;
 }
-.brand { display:flex; align-items:center; gap:12px; min-width:0 }
-.brand-mark {
-  width:42px; height:42px; display:grid; place-items:center;
-  background:linear-gradient(145deg,#f02b43,#801120);
-  border-radius:12px; font-size:23px; box-shadow:0 5px 20px #e11d3530;
+.primary {
+  background:var(--red);
+  border-color:var(--red);
 }
-.brand h1 { margin:0; font-size:17px; letter-spacing:2px }
-.brand p { margin:4px 0 0; color:var(--muted); font-size:10px; letter-spacing:1.6px }
-.top-actions { display:flex; align-items:center; gap:10px }
-.status-pill {
-  display:flex; align-items:center; gap:7px; border:1px solid var(--border);
-  border-radius:30px; padding:8px 11px; color:var(--muted); font-size:12px;
+input,select,textarea {
+  width:100%;
+  background:#0e1015;
+  border:1px solid var(--line);
+  color:white;
+  border-radius:8px;
+  padding:11px;
 }
-.dot { width:7px; height:7px; background:var(--green); border-radius:50% }
-.btn {
-  border:1px solid var(--border); border-radius:9px; padding:10px 13px;
-  background:var(--panel2); color:var(--text); font-weight:650;
-  transition:filter .15s,transform .15s;
+label {
+  display:block;
+  margin:14px 0 7px;
+  color:#c7cad2;
+  font-size:12px;
+  font-weight:bold;
 }
-.btn:hover { filter:brightness(1.18) }
-.btn:active { transform:scale(.98) }
-.btn-primary { background:var(--red); border-color:var(--red); color:white }
-.btn-danger { color:#ff8490; background:#35171d; border-color:#57232c }
-.btn-quiet { background:transparent }
-.btn-sm { padding:7px 9px; font-size:12px }
-
-.login-wrap {
-  min-height:calc(100vh - 76px); display:grid; place-items:center; padding:24px;
-  background:radial-gradient(ellipse at 50% 0%,#53131e44,transparent 55%);
+.login {
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
 }
 .login-card {
-  width:min(100%,430px); padding:30px; border:1px solid var(--border);
-  border-radius:20px; background:var(--surface); box-shadow:var(--shadow);
+  width:min(420px,100%);
+  padding:28px;
+  border:1px solid #35303a;
+  background:var(--panel);
+  border-radius:18px;
 }
-.login-emblem {
-  width:58px; height:58px; display:grid; place-items:center; font-size:30px;
-  background:#32131a; border:1px solid #64212d; border-radius:16px; margin-bottom:20px;
+.logo {
+  display:inline-grid;
+  place-items:center;
+  width:48px;height:48px;
+  background:var(--red);
+  border-radius:13px;
+  font-size:23px;
+  font-weight:900;
+  margin-right:10px;
 }
-.login-card h2 { margin:0 0 8px; font-size:26px }
-.login-card p { line-height:1.6 }
-.field { display:grid; gap:7px; margin-bottom:14px }
-.field label { color:#d9dce5; font-size:12px; font-weight:650 }
-.field input,.field select,.field textarea,.toolbar input {
-  width:100%; min-width:0; padding:12px 13px; color:var(--text);
-  background:#0d0f14; border:1px solid var(--border); border-radius:9px;
+.muted { color:var(--muted) }
+.warning {
+  padding:12px;
+  border:1px solid #695026;
+  background:#272013;
+  color:#f2d38d;
+  border-radius:9px;
+  font-size:12px;
+  margin-top:16px;
+  line-height:1.6;
 }
-.field textarea { min-height:95px; resize:vertical }
-.field input:focus,.field select:focus,.field textarea:focus,.toolbar input:focus {
-  border-color:var(--red2); outline:none;
-}
-.login-card form .btn { width:100%; margin-top:5px }
-.message { margin-top:14px; color:var(--amber); font-size:13px; line-height:1.5 }
-
-.shell { display:grid; grid-template-columns:245px minmax(0,1fr); min-height:calc(100vh - 76px) }
+.layout { min-height:100vh }
 .sidebar {
-  padding:22px 14px; background:#101116; border-right:1px solid var(--border);
-  display:flex; flex-direction:column; gap:8px;
+  width:245px;
+  position:fixed;
+  inset:0 auto 0 0;
+  background:#101115;
+  border-right:1px solid var(--line);
+  padding:22px 14px;
+  z-index:5;
 }
-.side-label { margin:8px 10px; color:#6f7584; font-size:10px; font-weight:800; letter-spacing:1.6px }
-.nav-btn {
-  display:flex; align-items:center; gap:12px; width:100%; padding:12px;
-  color:#aeb3c1; background:transparent; border:1px solid transparent;
-  border-radius:10px; text-align:left; font-size:13px; font-weight:650;
+.brand {
+  display:flex;
+  align-items:center;
+  margin-bottom:30px;
+  font-weight:bold;
+  letter-spacing:1px;
 }
-.nav-btn:hover { background:#ffffff08; color:white }
-.nav-btn.active { background:#3a151d; color:white; border-color:#63212d }
-.nav-icon { width:22px; text-align:center; font-size:16px }
-.sidebar-footer { margin-top:auto; padding:13px; border:1px solid var(--border); border-radius:12px }
-.agent-line { display:flex; gap:10px; align-items:center; min-width:0 }
-.avatar {
-  flex-shrink:0; width:37px; height:37px; display:grid; place-items:center;
-  border-radius:11px; background:#30202a; color:#ff8290; font-weight:800;
+.brand small {
+  display:block;
+  color:var(--muted);
+  letter-spacing:0;
+  font-size:10px;
+  margin-top:5px;
 }
-.agent-info { min-width:0 }
-.agent-info strong { display:block; font-size:12px; overflow-wrap:anywhere }
-.agent-info span { display:block; color:var(--muted); font-size:11px; margin-top:4px }
-
-.content { min-width:0; padding:28px; max-width:1600px; width:100%; margin:0 auto }
-.page { display:none }
-.page.active { display:block }
-.page-heading {
-  display:flex; align-items:flex-start; justify-content:space-between;
-  gap:18px; margin-bottom:24px;
+.nav-title {
+  color:#777d89;
+  font-size:10px;
+  letter-spacing:2px;
+  margin:22px 8px 9px;
 }
-.page-heading h2 { font-size:26px; margin:0 0 7px; letter-spacing:-.5px }
-.page-heading p { margin:0; color:var(--muted); font-size:13px; line-height:1.5 }
-.eyebrow { color:var(--red2); font-size:10px; font-weight:800; letter-spacing:2px; margin-bottom:8px }
-.stats {
-  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:15px; margin-bottom:22px;
+.nav button {
+  width:100%;
+  text-align:left;
+  margin:3px 0;
+  border-color:transparent;
+  background:transparent;
+  color:#b7bbc5;
 }
-.stat {
-  position:relative; overflow:hidden; padding:19px;
-  background:var(--panel); border:1px solid var(--border); border-radius:var(--radius);
+.nav button:hover,.nav button.active {
+  background:#30151a;
+  color:white;
+  border-color:#57232b;
 }
-.stat:after {
-  content:""; position:absolute; width:90px; height:90px; border-radius:50%;
-  background:#e11d3510; right:-32px; top:-35px;
+.main { margin-left:245px }
+.topbar {
+  height:68px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 28px;
+  background:#101115;
 }
-.stat-top { display:flex; align-items:center; justify-content:space-between; gap:10px }
-.stat-label { color:var(--muted); font-size:12px }
-.stat-icon { font-size:18px }
-.stat-number { margin-top:14px; font-size:30px; font-weight:800; letter-spacing:-1px }
-.stat-note { margin-top:6px; color:var(--muted); font-size:11px }
-.grid-2 { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr); gap:16px }
-.panel { min-width:0; padding:20px; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius) }
-.panel-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px }
-.panel-head h3 { margin:0; font-size:14px }
-.panel-head span { color:var(--muted); font-size:11px }
-.activity { display:grid; gap:0 }
-.activity-item { display:flex; align-items:flex-start; gap:12px; padding:13px 0; border-bottom:1px solid var(--border) }
-.activity-item:last-child { border-bottom:0 }
-.activity-symbol { flex-shrink:0; width:34px; height:34px; display:grid; place-items:center; background:#2b171e; border-radius:10px }
-.activity-text { min-width:0; overflow-wrap:anywhere }
-.activity-text strong { display:block; font-size:12px; font-weight:700 }
-.activity-text p { margin:5px 0 0; color:var(--muted); font-size:11px; line-height:1.5 }
-.empty { padding:28px 10px; text-align:center; color:var(--muted); font-size:13px }
-.empty-icon { font-size:26px; margin-bottom:8px }
-
-.toolbar { display:flex; align-items:center; gap:10px; margin-bottom:15px; flex-wrap:wrap }
-.toolbar input { flex:1; min-width:180px; max-width:460px }
-.table-panel { padding:0; overflow:hidden }
-.table-wrap { overflow:auto; max-width:100% }
-table { width:100%; border-collapse:collapse; min-width:650px; font-size:12px }
-thead { background:#20222b }
-th { padding:13px 15px; text-align:left; color:#aeb3c1; font-size:10px; letter-spacing:.8px; text-transform:uppercase; white-space:nowrap }
-td { padding:14px 15px; border-top:1px solid var(--border); vertical-align:top; max-width:280px; overflow-wrap:anywhere; line-height:1.5 }
-tbody tr:hover { background:#ffffff04 }
-.cell-title { font-weight:700; color:#f6f6f8 }
-.cell-sub { display:block; margin-top:4px; color:var(--muted); font-size:11px }
-.tag { display:inline-flex; align-items:center; padding:5px 8px; border-radius:30px; font-size:10px; font-weight:750; background:#272a35; color:#d6d9e2 }
-.tag-red { color:#ff9aa5; background:#3a171f }
-.tag-green { color:#8cf0c6; background:#123429 }
-.tag-amber { color:#ffda8c; background:#392c17 }
-.row-actions { display:flex; gap:6px }
-.form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 14px }
-.span-2 { grid-column:1/-1 }
-.form-panel { margin-bottom:18px }
-.form-panel form { margin:0 }
-.form-footer { display:flex; gap:9px; flex-wrap:wrap; margin-top:6px }
-.notice { padding:13px 15px; border:1px solid #634b22; background:#2c2417; border-radius:10px; color:#ffda8c; font-size:12px; line-height:1.6; margin-bottom:18px }
-.toast-area { position:fixed; right:20px; bottom:20px; z-index:30; display:grid; gap:9px; width:min(360px,calc(100% - 40px)) }
-.toast { background:#20232d; border:1px solid var(--border); border-left:4px solid var(--green); border-radius:10px; padding:14px 16px; box-shadow:var(--shadow); font-size:13px; line-height:1.5 }
-.toast.error { border-left-color:var(--red2) }
-.footer-note { color:#656b79; font-size:10px; margin-top:24px; line-height:1.7 }
-
-@media(max-width:1100px) {
-  .stats { grid-template-columns:repeat(2,minmax(0,1fr)) }
-  .grid-2 { grid-template-columns:1fr }
+.content {
+  max-width:1500px;
+  padding:28px;
+  margin:auto;
 }
-@media(max-width:760px) {
-  .topbar { height:68px; padding:0 14px }
-  .brand h1 { font-size:14px }
-  .brand p { font-size:8px; letter-spacing:1px }
-  .status-pill { display:none }
-  .shell { display:block; min-height:calc(100vh - 68px) }
+.heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
+  margin-bottom:23px;
+}
+h1 { font-size:28px;margin:5px 0 }
+h2 { font-size:16px;margin-top:0 }
+.eyebrow {
+  color:#ff6874;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+.card,.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:18px;
+  min-width:0;
+}
+.stat-label { color:var(--muted);font-size:12px }
+.stat-number { font-size:30px;font-weight:bold;margin-top:10px }
+.columns {
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:15px;
+  margin-top:16px;
+}
+.quick {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+.quick button { text-align:left;line-height:1.7 }
+.toolbar {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+.search { max-width:340px }
+.table-wrap {
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+table {
+  border-collapse:collapse;
+  width:100%;
+  min-width:600px;
+}
+th,td {
+  text-align:left;
+  padding:13px;
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+}
+th {
+  color:var(--muted);
+  background:#1b1d24;
+}
+tbody tr:last-child td { border:0 }
+.status {
+  display:inline-block;
+  background:#35191e;
+  color:#ff9aa2;
+  border-radius:20px;
+  padding:4px 9px;
+  font-size:10px;
+}
+.empty {
+  text-align:center;
+  padding:30px;
+  color:var(--muted);
+}
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 14px;
+}
+.span2 { grid-column:1/-1 }
+.modal-bg {
+  position:fixed;
+  inset:0;
+  z-index:20;
+  background:#000b;
+  display:grid;
+  place-items:center;
+  padding:15px;
+}
+.modal {
+  width:min(600px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#15171d;
+  border:1px solid #393c45;
+  border-radius:15px;
+  padding:22px;
+}
+.modal-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:9px;
+  margin-top:20px;
+}
+.footer {
+  text-align:center;
+  color:#656b76;
+  font-size:10px;
+  padding:25px;
+}
+@media(max-width:1050px) {
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)) }
+  .columns { grid-template-columns:1fr }
+}
+@media(max-width:720px) {
   .sidebar {
-    padding:9px; display:flex; flex-direction:row; overflow-x:auto;
-    border-right:0; border-bottom:1px solid var(--border); gap:6px;
+    display:none;
+    width:245px;
+    box-shadow:0 0 0 100vw #0009;
   }
-  .side-label,.sidebar-footer { display:none }
-  .nav-btn { width:auto; min-width:max-content; padding:10px; font-size:11px }
-  .nav-icon { width:auto }
+  .sidebar.open { display:block }
+  .main { margin-left:0 }
+  .topbar { padding:0 12px }
   .content { padding:18px 12px }
-  .page-heading h2 { font-size:22px }
-  .page-heading { align-items:flex-start }
-  .stats { gap:9px }
-  .stat { padding:13px }
-  .stat-number { font-size:25px }
-  .panel { padding:14px }
-}
-@media(max-width:440px) {
+  .heading h1 { font-size:23px }
   .form-grid { grid-template-columns:1fr }
-  .span-2 { grid-column:auto }
-  .top-actions .btn { padding:8px; font-size:11px }
-  .brand-mark { width:36px; height:36px }
+  .span2 { grid-column:auto }
 }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <div class="brand-mark">🛡️</div>
-    <div>
-      <h1>BOTANICOS <span class="red">PDA</span></h1>
-      <p>POLICE OPERATIONS SYSTEM</p>
-    </div>
-  </div>
-  <div class="top-actions">
-    <div class="status-pill"><span class="dot"></span><span id="connectionLabel">Sistema iniciado</span></div>
-    <button id="topLogout" class="btn btn-quiet hidden">Salir ↗</button>
-  </div>
-</header>
-
-<section id="loginView" class="login-wrap">
+<section id="login" class="login">
   <div class="login-card">
-    <div class="login-emblem">🚔</div>
-    <div class="eyebrow">LOS SANTOS POLICE DEPARTMENT</div>
-    <h2>Acceso al sistema</h2>
-    <p class="muted">Identifícate con las credenciales asignadas por el administrador de BOTANICOS.</p>
+    <div style="display:flex;align-items:center;margin-bottom:25px">
+      <div class="logo">B</div>
+      <div>
+        <div class="eyebrow">LOS SANTOS · ROLEPLAY</div>
+        <strong>BOTANICOS RP</strong>
+        <div class="muted" style="font-size:11px">
+          Sistema de gestión policial
+        </div>
+      </div>
+    </div>
+    <h1>Acceso policial</h1>
+    <p class="muted">Ingresa a la base de datos de tu departamento.</p>
     <form id="loginForm">
-      <div class="field">
-        <label for="email">CORREO ELECTRÓNICO</label>
-        <input id="email" type="email" autocomplete="username" placeholder="agente@ejemplo.com" required>
-      </div>
-      <div class="field">
-        <label for="password">CONTRASEÑA</label>
-        <input id="password" type="password" autocomplete="current-password" placeholder="Tu contraseña" required>
-      </div>
-      <button id="loginButton" class="btn btn-primary" type="submit">Iniciar sesión →</button>
+      <label for="username">USUARIO</label>
+      <input id="username" required autocomplete="username"
+        placeholder="Usuario policial">
+      <label for="password">CONTRASEÑA</label>
+      <input id="password" type="password" required
+        autocomplete="current-password" placeholder="Contraseña">
+      <button class="primary" style="width:100%;margin-top:20px">
+        Iniciar sesión →
+      </button>
     </form>
-    <button id="forgotPassword" class="btn btn-quiet" style="width:100%">¿Olvidaste tu contraseña?</button>
-    <div id="loginMessage" class="message" role="status"></div>
-    <p class="small muted">Acceso exclusivo para personal autorizado. Sistema de roleplay.</p>
+    <div class="warning">
+      <b>Demostración local</b><br>
+      Usuario: admin<br>
+      Contraseña: Botanicos2026!<br><br>
+      Este acceso no es seguro para proteger datos reales.
+      No publiques información personal sensible.
+    </div>
   </div>
 </section>
 
-<div id="appView" class="shell hidden">
-  <aside class="sidebar">
-    <div class="side-label">MENÚ PRINCIPAL</div>
-    <button class="nav-btn active" data-page="dashboard"><span class="nav-icon">▦</span> Panel general</button>
-    <button class="nav-btn" data-page="ciudadanos"><span class="nav-icon">♙</span> Ciudadanos</button>
-    <button class="nav-btn" data-page="detenciones"><span class="nav-icon">⚖</span> Detenciones</button>
-    <button class="nav-btn" data-page="multas"><span class="nav-icon">＄</span> Multas</button>
-    <button class="nav-btn" data-page="informes"><span class="nav-icon">▤</span> Informes</button>
-    <div class="sidebar-footer">
-      <div class="agent-line">
-        <div id="avatar" class="avatar">B</div>
-        <div class="agent-info">
-          <strong id="agentName">Agente</strong>
-          <span id="agentRole">Personal policial</span>
-        </div>
+<div id="application" class="layout hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="logo">B</div>
+      <div>BOTANICOS RP
+        <small>POLICE DATABASE SYSTEM</small>
       </div>
     </div>
+    <div class="nav-title">GENERAL</div>
+    <nav class="nav">
+      <button class="active" data-page="dashboard">▦ &nbsp; Panel principal</button>
+      <button data-page="citizens">♙ &nbsp; Ciudadanos</button>
+      <button data-page="detentions">⛓ &nbsp; Detenciones</button>
+      <button data-page="fines">＄ &nbsp; Multas</button>
+      <button data-page="reports">▤ &nbsp; Informes policiales</button>
+    </nav>
+    <div class="nav-title">SISTEMA</div>
+    <nav class="nav">
+      <button data-page="settings">⚙ &nbsp; Datos y respaldos</button>
+      <button id="logout">↪ &nbsp; Cerrar sesión</button>
+    </nav>
+    <p class="muted" style="font-size:10px;margin-top:35px">
+      BOTANICOS RP · V1.0 DEMO
+    </p>
   </aside>
 
-  <main class="content">
-    <section id="page-dashboard" class="page active">
-      <div class="page-heading">
-        <div>
-          <div class="eyebrow">CENTRO DE OPERACIONES</div>
-          <h2>Panel general</h2>
-          <p>Resumen de actividad policial de BOTANICOS RP.</p>
-        </div>
-        <span id="todayLabel" class="tag"></span>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><div class="stat-top"><span class="stat-label">Ciudadanos</span><span class="stat-icon">♙</span></div><div id="stat-ciudadanos" class="stat-number">—</div><div class="stat-note">Registros compartidos</div></div>
-        <div class="stat"><div class="stat-top"><span class="stat-label">Detenciones</span><span class="stat-icon">⚖</span></div><div id="stat-detenciones" class="stat-number">—</div><div class="stat-note">Actuaciones registradas</div></div>
-        <div class="stat"><div class="stat-top"><span class="stat-label">Multas</span><span class="stat-icon">＄</span></div><div id="stat-multas" class="stat-number">—</div><div class="stat-note">Total de sanciones</div></div>
-        <div class="stat"><div class="stat-top"><span class="stat-label">Informes</span><span class="stat-icon">▤</span></div><div id="stat-informes" class="stat-number">—</div><div class="stat-note">Documentos registrados</div></div>
-      </div>
-
-      <div class="grid-2">
-        <div class="panel">
-          <div class="panel-head"><h3>Actividad reciente</h3><span>Tiempo real</span></div>
-          <div id="recentActivity" class="activity"><div class="empty">Cargando actividad...</div></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><h3>Estado del sistema</h3><span class="tag tag-green">PDA</span></div>
-          <div class="activity-item"><div class="activity-symbol">☁</div><div class="activity-text"><strong>Base de datos</strong><p id="databaseStatus">Comprobando conexión...</p></div></div>
-          <div class="activity-item"><div class="activity-symbol">♙</div><div class="activity-text"><strong>Cuenta activa</strong><p id="accountStatus">Verificando permisos...</p></div></div>
-          <div class="activity-item"><div class="activity-symbol">🔒</div><div class="activity-text"><strong>Acceso protegido</strong><p>El acceso depende de las reglas de seguridad de Firebase.</p></div></div>
-          <p class="footer-note">BOTANICOS PDA · SISTEMA DE ROLEPLAY<br>Los registros representan actuaciones ficticias del servidor.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="page-ciudadanos" class="page">
-      <div class="page-heading"><div><div class="eyebrow">BASE DE DATOS CIVIL</div><h2>Ciudadanos</h2><p>Registro de personajes y antecedentes del roleplay.</p></div></div>
-      <div id="notice-ciudadanos" class="notice hidden"></div>
-      <div class="panel form-panel">
-        <div class="panel-head"><h3>＋ Nuevo ciudadano</h3><span>Formulario de registro</span></div>
-        <form id="form-ciudadanos" class="form-grid">
-          <div class="field"><label>Nombre del personaje *</label><input name="nombre" maxlength="100" required></div>
-          <div class="field"><label>ID del personaje *</label><input name="identificacion" maxlength="40" required></div>
-          <div class="field"><label>Ocupación</label><input name="ocupacion" maxlength="80"></div>
-          <div class="field"><label>Estado</label><select name="estado"><option>Activo</option><option>Buscado</option><option>Detenido</option></select></div>
-          <div class="field span-2"><label>Antecedentes y observaciones</label><textarea name="observaciones" maxlength="1500"></textarea></div>
-          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Guardar ciudadano</button></div>
-        </form>
-      </div>
-      <div class="toolbar"><input id="search-ciudadanos" placeholder="Buscar por nombre, ID u ocupación..."><button class="btn" data-export="ciudadanos">Exportar CSV ↓</button></div>
-      <div class="panel table-panel"><div class="table-wrap" id="table-ciudadanos"></div></div>
-    </section>
-
-    <section id="page-detenciones" class="page">
-      <div class="page-heading"><div><div class="eyebrow">REGISTRO DE ACTUACIONES</div><h2>Detenciones</h2><p>Detenciones, motivos, agentes responsables y traslados.</p></div></div>
-      <div class="panel form-panel">
-        <div class="panel-head"><h3>＋ Nueva detención</h3><span>Informe de actuación</span></div>
-        <form id="form-detenciones" class="form-grid">
-          <div class="field"><label>Nombre del detenido *</label><input name="nombre" maxlength="100" required></div>
-          <div class="field"><label>ID del personaje</label><input name="identificacion" maxlength="40"></div>
-          <div class="field"><label>Agente responsable *</label><input name="agente" maxlength="100" required></div>
-          <div class="field"><label>Motivo *</label><input name="motivo" maxlength="300" required></div>
-          <div class="field"><label>Destino</label><select name="destino"><option>Comisaría</option><option>Federal</option><option>Libertad</option></select></div>
-          <div class="field"><label>Estado del caso</label><select name="estado"><option>Procesado</option><option>En investigación</option><option>Trasladado</option><option>Liberado</option></select></div>
-          <div class="field span-2"><label>Detalles y evidencias del roleplay</label><textarea name="detalles" maxlength="2500"></textarea></div>
-          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Registrar detención</button></div>
-        </form>
-      </div>
-      <div class="toolbar"><input id="search-detenciones" placeholder="Buscar detenido, agente o motivo..."><button class="btn" data-export="detenciones">Exportar CSV ↓</button></div>
-      <div class="panel table-panel"><div class="table-wrap" id="table-detenciones"></div></div>
-    </section>
-
-    <section id="page-multas" class="page">
-      <div class="page-heading"><div><div class="eyebrow">CONTROL DE SANCIONES</div><h2>Multas</h2><p>Registro de sanciones económicas dentro del servidor.</p></div></div>
-      <div class="stats">
-        <div class="stat"><div class="stat-top"><span class="stat-label">Multas registradas</span><span>＄</span></div><div id="fine-count" class="stat-number">0</div><div class="stat-note">Total de registros</div></div>
-        <div class="stat"><div class="stat-top"><span class="stat-label">Importe acumulado</span><span>▤</span></div><div id="fine-total" class="stat-number">0</div><div class="stat-note">Moneda del roleplay</div></div>
-      </div>
-      <div class="panel form-panel">
-        <div class="panel-head"><h3>＋ Nueva multa</h3><span>Registro de sanción</span></div>
-        <form id="form-multas" class="form-grid">
-          <div class="field"><label>Nombre del infractor *</label><input name="nombre" maxlength="100" required></div>
-          <div class="field"><label>ID del personaje</label><input name="identificacion" maxlength="40"></div>
-          <div class="field"><label>Importe ($) *</label><input name="importe" type="number" min="1" max="100000000" step="1" required></div>
-          <div class="field"><label>Agente responsable *</label><input name="agente" maxlength="100" required></div>
-          <div class="field span-2"><label>Motivo de la sanción *</label><textarea name="motivo" maxlength="1000" required></textarea></div>
-          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Registrar multa</button></div>
-        </form>
-      </div>
-      <div class="toolbar"><input id="search-multas" placeholder="Buscar infractor, agente o motivo..."><button class="btn" data-export="multas">Exportar CSV ↓</button></div>
-      <div class="panel table-panel"><div class="table-wrap" id="table-multas"></div></div>
-    </section>
-
-    <section id="page-informes" class="page">
-      <div class="page-heading"><div><div class="eyebrow">DOCUMENTACIÓN POLICIAL</div><h2>Informes</h2><p>Actuaciones, investigaciones e incidencias del roleplay.</p></div></div>
-      <div class="panel form-panel">
-        <div class="panel-head"><h3>＋ Nuevo informe</h3><span>Documento de actuación</span></div>
-        <form id="form-informes" class="form-grid">
-          <div class="field"><label>Título del informe *</label><input name="titulo" maxlength="150" required></div>
-          <div class="field"><label>Agente responsable *</label><input name="agente" maxlength="100" required></div>
-          <div class="field"><label>Tipo de informe</label><select name="tipo"><option>Actuación policial</option><option>Investigación</option><option>Incidente</option><option>Traslado federal</option><option>Incautación</option></select></div>
-          <div class="field"><label>Referencia del caso</label><input name="referencia" maxlength="50" placeholder="Ej. BTP-001"></div>
-          <div class="field span-2"><label>Descripción de los hechos *</label><textarea name="descripcion" maxlength="4000" required></textarea></div>
-          <div class="span-2 form-footer"><button class="btn btn-primary" type="submit">Guardar informe</button></div>
-        </form>
-      </div>
-      <div class="toolbar"><input id="search-informes" placeholder="Buscar título, agente o referencia..."><button class="btn" data-export="informes">Exportar CSV ↓</button></div>
-      <div class="panel table-panel"><div class="table-wrap" id="table-informes"></div></div>
-    </section>
+  <main class="main">
+    <header class="topbar">
+      <button id="menu" class="mobile-menu">☰ Menú</button>
+      <span class="muted" id="breadcrumb">Panel principal</span>
+      <span class="status">● SISTEMA LOCAL</span>
+    </header>
+    <div id="content" class="content"></div>
   </main>
 </div>
 
-<div id="toastArea" class="toast-area" aria-live="polite"></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
+<div id="modalRoot"></div>
 <script>
-// =========================================================
-// CONFIGURACIÓN: sustituye estos valores por los de Firebase
-// =========================================================
-const firebaseConfig = {
-  apiKey: "AIzaSyDZxkIs7ocMq65UIg-xeAHblP2l-JEJT-g",
-  authDomain: "botanicos-pda.firebaseapp.com",
-  projectId: "botanicos-pda",
-  storageBucket: "botanicos-pda.firebasestorage.app",
-  messagingSenderId: "746109240034",
-  appId: "1:746109240034:web:99ccbc52a22068d44b94bb",
-  measurementId: "G-ZWQN1FRMBF"
+(() => {
+"use strict";
+
+const $ = s => document.querySelector(s);
+const escapeHTML = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const KEY = "botanicos_rp_pda_demo";
+const titles = {
+  dashboard:"Panel principal",
+  citizens:"Ciudadanos",
+  detentions:"Detenciones",
+  fines:"Multas",
+  reports:"Informes policiales",
+  settings:"Datos y respaldos"
 };
 
-// No añadas contraseñas ni claves privadas aquí.
-const CONFIG_INCOMPLETA = Object.values(firebaseConfig).some(
-  v => !v || v.startsWith("PEGA_TU_")
-);
-
-const MODELOS = {
-  ciudadanos: {
-    label:"Ciudadanos", icon:"♙",
+const config = {
+  citizens:{
+    name:"ciudadano",
     fields:[
-      ["nombre","Nombre"],["identificacion","ID"],
-      ["ocupacion","Ocupación"],["estado","Estado"],
-      ["observaciones","Observaciones"]
+      ["name","Nombre completo","text",1],
+      ["citizenId","ID ciudadano","text",1],
+      ["dob","Fecha de nacimiento","date"],
+      ["phone","Teléfono","text"],
+      ["address","Dirección","text"],
+      ["notes","Antecedentes y notas","textarea"]
     ],
-    search:["nombre","identificacion","ocupacion","estado","observaciones"]
+    cols:[["name","Nombre"],["citizenId","ID"],["phone","Teléfono"]]
   },
-  detenciones: {
-    label:"Detenciones", icon:"⚖",
+  detentions:{
+    name:"detención",
     fields:[
-      ["nombre","Detenido"],["identificacion","ID"],
-      ["agente","Agente"],["motivo","Motivo"],
-      ["destino","Destino"],["estado","Estado"],["detalles","Detalles"]
+      ["person","Nombre del detenido","text",1],
+      ["citizenId","ID ciudadano","text"],
+      ["reason","Motivo de detención","text",1],
+      ["officer","Agente responsable","text",1],
+      ["date","Fecha","date",1],
+      ["location","Lugar","text"],
+      ["evidence","Armas, objetos y evidencias","textarea"],
+      ["notes","Descripción de los hechos","textarea"]
     ],
-    search:["nombre","identificacion","agente","motivo","destino","estado"]
+    cols:[["person","Detenido"],["reason","Motivo"],["officer","Agente"],["date","Fecha"]]
   },
-  multas: {
-    label:"Multas", icon:"＄",
+  fines:{
+    name:"multa",
     fields:[
-      ["nombre","Infractor"],["identificacion","ID"],
-      ["importe","Importe ($)"],["agente","Agente"],["motivo","Motivo"]
+      ["person","Ciudadano","text",1],
+      ["citizenId","ID ciudadano","text"],
+      ["reason","Motivo de la multa","text",1],
+      ["amount","Importe en dólares","number",1],
+      ["officer","Agente emisor","text",1],
+      ["date","Fecha","date",1],
+      ["status","Estado","select",1,["Pendiente","Pagada","Anulada"]]
     ],
-    search:["nombre","identificacion","agente","motivo"]
+    cols:[["person","Ciudadano"],["reason","Motivo"],["amount","Importe"],["status","Estado"]]
   },
-  informes: {
-    label:"Informes", icon:"▤",
+  reports:{
+    name:"informe",
     fields:[
-      ["titulo","Título"],["agente","Agente"],["tipo","Tipo"],
-      ["referencia","Referencia"],["descripcion","Descripción"]
+      ["title","Título del informe","text",1],
+      ["category","Tipo de informe","select",1,["Incidente","Investigación","Evidencias","Traslado federal","Otro"]],
+      ["officer","Agente responsable","text",1],
+      ["date","Fecha","date",1],
+      ["person","Persona relacionada","text"],
+      ["description","Descripción de los hechos","textarea",1],
+      ["evidence","Evidencias y observaciones","textarea"]
     ],
-    search:["titulo","agente","tipo","referencia","descripcion"]
+    cols:[["title","Título"],["category","Categoría"],["officer","Agente"],["date","Fecha"]]
   }
 };
 
-let auth = null;
-let db = null;
-let usuario = null;
-let perfil = null;
-let unsubscribers = [];
-let datos = {ciudadanos:[],detenciones:[],multas:[],informes:[]};
-let busy = false;
+let data = {citizens:[],detentions:[],fines:[],reports:[]};
+let page = "dashboard";
+let query = "";
 
-const $ = id => document.getElementById(id);
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
+function loadData(){
+  try {
+    const old = JSON.parse(localStorage.getItem(KEY) || "{}");
+    Object.keys(data).forEach(k => {
+      if(Array.isArray(old[k])) data[k] = old[k];
+    });
+  } catch(e) {
+    console.warn("No se pudieron leer los datos locales",e);
+  }
 }
-function toast(message, error=false) {
-  const node = document.createElement("div");
-  node.className = "toast" + (error ? " error" : "");
-  node.textContent = message;
-  $("toastArea").appendChild(node);
-  setTimeout(() => node.remove(), 4500);
+function saveData(){
+  try {
+    localStorage.setItem(KEY,JSON.stringify(data));
+    return true;
+  } catch(e) {
+    alert("No se pudieron guardar los datos en este navegador.");
+    return false;
+  }
 }
-function formatDate(value) {
-  if (!value) return "Pendiente";
-  const d = value.toDate ? value.toDate() : new Date(value);
-  return Number.isNaN(d.getTime()) ? "—" : d.toLocaleString("es-MX");
-}
-function formatMoney(value) {
+function notify(message){alert(message)}
+function money(n){
   return new Intl.NumberFormat("es-MX",{
-    maximumFractionDigits:0
-  }).format(Number(value)||0);
+    style:"currency",currency:"USD",maximumFractionDigits:0
+  }).format(Number(n)||0);
 }
-function roleName(role) {
-  return role === "admin" ? "Administrador" : "Agente policial";
-}
-function setConnection(text, online=false) {
-  $("connectionLabel").textContent = text;
-  const dot = document.querySelector(".status-pill .dot");
-  dot.style.background = online ? "var(--green)" : "var(--amber)";
-}
-function stopListeners() {
-  unsubscribers.forEach(unsub => unsub());
-  unsubscribers = [];
-}
-function showLogin(message="") {
-  stopListeners();
-  usuario = null;
-  perfil = null;
-  $("loginView").classList.remove("hidden");
-  $("appView").classList.add("hidden");
-  $("topLogout").classList.add("hidden");
-  $("loginMessage").textContent = message;
-  setConnection("Sin sesión",false);
-}
-function showApp() {
-  $("loginView").classList.add("hidden");
-  $("appView").classList.remove("hidden");
-  $("topLogout").classList.remove("hidden");
-  const name = perfil.nombre || usuario.email || "Agente";
-  $("agentName").textContent = name;
-  $("agentRole").textContent = roleName(perfil.role);
-  $("avatar").textContent = name.trim().charAt(0).toUpperCase() || "B";
-  $("accountStatus").textContent = name + " · " + roleName(perfil.role);
-  $("todayLabel").textContent = new Date().toLocaleDateString("es-MX");
-  setConnection("Conectando...",false);
-  subscribeCollections();
-}
-function goToPage(page) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  $("page-"+page).classList.add("active");
-  document.querySelectorAll("[data-page]").forEach(b => b.classList.toggle("active",b.dataset.page===page));
-}
-document.querySelectorAll("[data-page]").forEach(btn => {
-  btn.addEventListener("click", () => goToPage(btn.dataset.page));
-});
-$("topLogout").addEventListener("click", () => auth && auth.signOut());
-$("forgotPassword").addEventListener("click", async () => {
-  const email = $("email").value.trim();
-  if (!email) return toast("Escribe tu correo electrónico primero.",true);
-  try {
-    await auth.sendPasswordResetEmail(email);
-    toast("Solicitud procesada. Si la cuenta existe, recibirás instrucciones.");
-  } catch (e) {
-    toast("No se pudo enviar el correo. Revisa la configuración de Firebase.",true);
-  }
-});
-$("loginForm").addEventListener("submit", async e => {
+function dateNow(){return new Date().toISOString().slice(0,10)}
+
+$("#loginForm").addEventListener("submit",e=>{
   e.preventDefault();
-  if (CONFIG_INCOMPLETA) {
-    $("loginMessage").textContent = "Falta configurar Firebase en el código.";
-    return;
+  if($("#username").value.trim()==="admin" &&
+     $("#password").value==="Botanicos2026!"){
+    sessionStorage.setItem("botanicos_demo","1");
+    $("#login").classList.add("hidden");
+    $("#application").classList.remove("hidden");
+    render();
+  } else {
+    alert("Usuario o contraseña incorrectos.");
   }
-  const button = $("loginButton");
-  button.disabled = true;
-  button.textContent = "Verificando...";
+});
+
+$("#logout").addEventListener("click",()=>{
+  sessionStorage.removeItem("botanicos_demo");
+  $("#application").classList.add("hidden");
+  $("#login").classList.remove("hidden");
+});
+$("#menu").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
+
+document.querySelectorAll("[data-page]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    page=button.dataset.page;
+    query="";
+    document.querySelectorAll("[data-page]").forEach(b=>
+      b.classList.toggle("active",b===button)
+    );
+    $("#sidebar").classList.remove("open");
+    render();
+  });
+});
+
+function stat(title,value,icon){
+  return `<div class="card">
+    <div class="stat-label">${title} ${icon}</div>
+    <div class="stat-number">${value}</div>
+  </div>`;
+}
+function dashboard(){
+  const total=data.fines.reduce((s,x)=>s+(Number(x.amount)||0),0);
+  return `<div class="heading">
+    <div><div class="eyebrow">CENTRO DE OPERACIONES</div>
+    <h1>Panel principal</h1>
+    <div class="muted">Bienvenido al sistema policial BOTANICOS RP.</div></div>
+    <button class="primary" onclick="PDA.newRecord('detentions')">＋ Nueva detención</button>
+  </div>
+  <div class="grid">
+    ${stat("Ciudadanos",data.citizens.length,"♙")}
+    ${stat("Detenciones",data.detentions.length,"⛓")}
+    ${stat("Multas emitidas",data.fines.length,"＄")}
+    ${stat("Importe de multas",money(total),"▤")}
+  </div>
+  <div class="columns">
+    <section class="panel"><h2>Actividad reciente</h2>
+      ${recentActivity()}
+    </section>
+    <section class="panel"><h2>Acciones rápidas</h2>
+      <div class="quick">
+        <button onclick="PDA.newRecord('citizens')">♙<br>Nuevo ciudadano</button>
+        <button onclick="PDA.newRecord('detentions')">⛓<br>Registrar detención</button>
+        <button onclick="PDA.newRecord('fines')">＄<br>Registrar multa</button>
+        <button onclick="PDA.newRecord('reports')">▤<br>Crear informe</button>
+      </div>
+      <div class="warning">Versión de demostración: los datos no se comparten entre usuarios y el acceso no ofrece seguridad real.</div>
+    </section>
+  </div>
+  <div class="footer">BOTANICOS RP · SISTEMA DE ROLEPLAY · NO OFICIAL DE ROCKSTAR GAMES</div>`;
+}
+function recentActivity(){
+  let list=[];
+  Object.keys(config).forEach(type=>{
+    data[type].forEach(x=>list.push({
+      type:config[type].name,
+      title:x.name||x.person||x.title||"Registro",
+      date:x.createdAt||""
+    }));
+  });
+  list.sort((a,b)=>b.date.localeCompare(a.date));
+  if(!list.length)return '<div class="empty">No hay actividad registrada todavía.</div>';
+  return list.slice(0,8).map(x=>`
+    <p style="padding:9px 0;border-bottom:1px solid var(--line)">
+      <b>${escapeHTML(x.type)}</b> · ${escapeHTML(x.title)}
+      <br><span class="muted">${escapeHTML(x.date?new Date(x.date).toLocaleString("es-MX"):"Registro local")}</span>
+    </p>`).join("");
+}
+function tablePage(type){
+  const c=config[type];
+  let rows=data[type].filter(x=>
+    Object.values(x).some(v=>String(v).toLowerCase().includes(query.toLowerCase()))
+  );
+  return `<div class="heading">
+    <div><div class="eyebrow">BASE DE DATOS POLICIAL</div>
+    <h1>${titles[type]}</h1>
+    <div class="muted">Administra y consulta los registros.</div></div>
+    <button class="primary" onclick="PDA.newRecord('${type}')">＋ Nuevo ${c.name}</button>
+  </div>
+  <div class="toolbar">
+    <input class="search" id="search" placeholder="Buscar registros..." value="${escapeHTML(query)}">
+    <span class="muted">${rows.length} registro(s)</span>
+  </div>
+  <div class="table-wrap"><table><thead><tr>
+    ${c.cols.map(col=>`<th>${col[1]}</th>`).join("")}<th>Acciones</th>
+  </tr></thead><tbody>
+  ${rows.length?rows.map(x=>`<tr>
+    ${c.cols.map(col=>`<td>${escapeHTML(col[0]==="amount"?money(x[col[0]]):x[col[0]]||"—")}</td>`).join("")}
+    <td><button onclick="PDA.editRecord('${type}','${x.id}')">Editar</button>
+    <button onclick="PDA.deleteRecord('${type}','${x.id}')">Borrar</button></td>
+  </tr>`).join(""):`<tr><td colspan="${c.cols.length+1}" class="empty">No hay registros.</td></tr>`}
+  </tbody></table></div>`;
+}
+function settings(){
+ return `<div class="heading"><div><div class="eyebrow">SISTEMA</div>
+ <h1>Datos y respaldos</h1><p class="muted">Administra copias de seguridad locales.</p></div></div>
+ <section class="panel"><h2>Exportar información</h2>
+ <p class="muted">Descarga una copia de ciudadanos, detenciones, multas e informes.</p>
+ <button class="primary" onclick="PDA.exportData()">Descargar respaldo JSON</button>
+ <label>Importar respaldo JSON</label><input type="file" id="importFile" accept=".json,application/json">
+ <button id="importBtn" style="margin-top:10px">Importar archivo</button>
+ <div class="warning">Los datos se guardan en este navegador. No guardes información sensible. El inicio de sesión de demostración no protege la base de datos.</div>
+ <hr style="border-color:var(--line);margin:25px 0">
+ <h2>Zona de mantenimiento</h2>
+ <button onclick="PDA.clearData()">Eliminar todos los registros</button></section>`;
+}
+function render(){
+ $("#breadcrumb").textContent=titles[page];
+ $("#content").innerHTML=page==="dashboard"?dashboard():
+   config[page]?tablePage(page):settings();
+ const search=$("#search");
+ if(search)search.addEventListener("input",e=>{
+   const pos=e.target.selectionStart;query=e.target.value;render();
+   const next=$("#search");next.focus();next.setSelectionRange(pos,pos);
+ });
+ const importBtn=$("#importBtn");
+ if(importBtn)importBtn.addEventListener("click",importData);
+}
+function openForm(type,id){
+ const c=config[type],existing=id?data[type].find(x=>x.id===id):null;
+ const fields=c.fields.map(f=>{
+   let [key,label,kind,required,options]=f;
+   let val=existing?.[key]||(key==="date"?dateNow():"");
+   let req=required?"required":"";
+   if(kind==="textarea")return `<div class="span2"><label>${label}</label><textarea name="${key}" ${req}>${escapeHTML(val)}</textarea></div>`;
+   if(kind==="select")return `<div><label>${label}</label><select name="${key}" ${req}>${options.map(o=>`<option ${val===o?"selected":""}>${o}</option>`).join("")}</select></div>`;
+   return `<div><label>${label}</label><input name="${key}" type="${kind}" value="${escapeHTML(val)}" ${req} ${kind==="number"?'min="0"':''}></div>`;
+ }).join("");
+ $("#modalRoot").innerHTML=`<div class="modal-bg" id="backdrop"><section class="modal">
+ <h2>${existing?"Editar":"Nuevo"} ${c.name}</h2>
+ <form id="recordForm"><div class="form-grid">${fields}</div>
+ <div class="modal-actions"><button type="button" id="cancel">Cancelar</button>
+ <button class="primary">Guardar registro</button></div></form></section></div>`;
+ const close=()=>$("#modalRoot").innerHTML="";
+ $("#cancel").onclick=close;
+ $("#backdrop").addEventListener("click",e=>{if(e.target.id==="backdrop")close()});
+ $("#recordForm").addEventListener("submit",e=>{
+   e.preventDefault();const fd=new FormData(e.target),record={};
+   c.fields.forEach(f=>record[f[0]]=String(fd.get(f[0])||"").trim());
+   if(existing)Object.assign(existing,record,{updatedAt:new Date().toISOString()});
+   else {record.id=crypto.randomUUID?crypto.randomUUID():String(Date.now());record.createdAt=new Date().toISOString();data[type].unshift(record)}
+   saveData();close();render();alert("Registro guardado.");
+ });
+}
+function exportData(){
+ const blob=new Blob([JSON.stringify({data,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="botanicos-pda-respaldo.json";a.click();URL.revokeObjectURL(url);
+}
+function importData(){
+ const file=$("#importFile").files[0];if(!file)return alert("Selecciona un archivo JSON.");
+ const reader=new FileReader();
+ reader.onload=()=>{
   try {
-    await auth.signInWithEmailAndPassword($("email").value.trim(),$("password").value);
-    $("loginMessage").textContent = "";
-  } catch (err) {
-    $("loginMessage").textContent = "No se pudo iniciar sesión. Comprueba las credenciales y la configuración.";
-  } finally {
-    button.disabled = false;
-    button.textContent = "Iniciar sesión →";
-  }
-});
-
-function subscribeCollections() {
-  stopListeners();
-  Object.keys(MODELOS).forEach(type => {
-    const unsubscribe = db.collection(type)
-      .orderBy("createdAt","desc")
-      .limit(500)
-      .onSnapshot(snapshot => {
-        datos[type] = snapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
-        renderTable(type);
-        renderStats();
-        renderActivity();
-        $("databaseStatus").textContent = "Conectada · datos sincronizados";
-        setConnection("En línea",true);
-      }, err => {
-        console.error("Firestore "+type,err);
-        $("databaseStatus").textContent = "No se pudo consultar "+MODELOS[type].label+". Revisa las reglas.";
-        setConnection("Error de datos",false);
-        toast("Error al cargar "+MODELOS[type].label+".",true);
-      });
-    unsubscribers.push(unsubscribe);
-  });
+   const obj=JSON.parse(reader.result),d=obj.data||obj;
+   if(!Object.keys(config).every(k=>Array.isArray(d[k])))throw Error();
+   if(confirm("La importación reemplazará los registros actuales.")){
+    data={citizens:d.citizens,detentions:d.detentions,fines:d.fines,reports:d.reports};
+    saveData();render();alert("Respaldo importado.");
+   }
+  } catch {alert("El archivo no tiene un respaldo compatible.")}
+ };
+ reader.readAsText(file);
 }
-
-function renderStats() {
-  Object.keys(MODELOS).forEach(type => {
-    $("stat-"+type).textContent = datos[type].length;
-  });
-  $("fine-count").textContent = datos.multas.length;
-  const total = datos.multas.reduce((sum,r)=>sum+(Number(r.importe)||0),0);
-  $("fine-total").textContent = "$"+formatMoney(total);
+function clearData(){
+ if(confirm("¿Eliminar TODOS los registros locales? Esta acción no se puede deshacer.")){
+  data={citizens:[],detentions:[],fines:[],reports:[]};saveData();render();
+ }
 }
-function renderActivity() {
-  const items = Object.keys(MODELOS)
-    .flatMap(type => datos[type].map(r => ({...r,_type:type})))
-    .sort((a,b) => {
-      const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
-      const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
-      return tb-ta;
-    }).slice(0,7);
-  const target = $("recentActivity");
-  if (!items.length) {
-    target.innerHTML = '<div class="empty"><div class="empty-icon">▤</div>No hay actividad registrada todavía.</div>';
-    return;
-  }
-  target.innerHTML = items.map(r => {
-    const type = MODELOS[r._type];
-    const title = r.nombre || r.titulo || type.label;
-    const detail = r.motivo || r.tipo || r.ocupacion || r.destino || "";
-    return '<div class="activity-item"><div class="activity-symbol">'+type.icon+
-      '</div><div class="activity-text"><strong>'+escapeHTML(type.label)+
-      ' · '+escapeHTML(title)+'</strong><p>'+escapeHTML(detail)+
-      ' · '+escapeHTML(formatDate(r.createdAt))+'</p></div></div>';
-  }).join("");
+window.PDA={newRecord:openForm,editRecord:openForm,deleteRecord(type,id){
+ const x=data[type].find(v=>v.id===id);
+ if(x&&confirm("¿Borrar este registro?")){data[type]=data[type].filter(v=>v.id!==id);saveData();render()}
+},exportData,clearData};
+loadData();
+if(sessionStorage.getItem("botanicos_demo")==="1"){
+ $("#login").classList.add("hidden");$("#application").classList.remove("hidden");render();
 }
-
-function filteredRows(type) {
-  const q = ($("search-"+type)?.value || "").trim().toLocaleLowerCase("es");
-  const fields = MODELOS[type].search;
-  return datos[type].filter(row => !q || fields.some(f =>
-    String(row[f] ?? "").toLocaleLowerCase("es").includes(q)
-  ));
-}
-function renderTable(type) {
-  const model = MODELOS[type];
-  const rows = filteredRows(type);
-  const target = $("table-"+type);
-  if (!rows.length) {
-    target.innerHTML = '<div class="empty"><div class="empty-icon">'+model.icon+
-      '</div>No se encontraron registros.</div>';
-    return;
-  }
-  let html = "<table><thead><tr>";
-  model.fields.forEach(([,label]) => html += "<th>"+escapeHTML(label)+"</th>");
-  html += "<th>Fecha</th><th>Agente que registró</th>";
-  if (perfil.role === "admin") html += "<th>Acciones</th>";
-  html += "</tr></thead><tbody>";
-  rows.forEach(row => {
-    html += "<tr>";
-    model.fields.forEach(([field]) => {
-      let value = row[field];
-      if (field === "importe") value = "$"+formatMoney(value);
-      if (field === "estado") {
-        html += '<td><span class="tag '+(value==="Activo"||value==="Procesado"?"tag-green":value==="Buscado"?"tag-red":"")+'">'+escapeHTML(value||"—")+"</span></td>";
-      } else {
-        html += "<td>"+escapeHTML(value || "—")+"</td>";
-      }
-    });
-    html += "<td>"+escapeHTML(formatDate(row.createdAt))+"</td>";
-    html += "<td>"+escapeHTML(row.createdByEmail || "—")+"</td>";
-    if (perfil.role === "admin") {
-      html += '<td><div class="row-actions"><button class="btn btn-danger btn-sm" data-delete="'+type+'" data-id="'+escapeHTML(row.id)+'">Eliminar</button></div></td>';
-    }
-    html += "</tr>";
-  });
-  target.innerHTML = html+"</tbody></table>";
-}
-
-Object.keys(MODELOS).forEach(type => {
-  $("search-"+type).addEventListener("input",()=>renderTable(type));
-  $("form-"+type).addEventListener("submit",async e => {
-    e.preventDefault();
-    if (!usuario || !perfil || busy) return;
-    const form = e.currentTarget;
-    const button = form.querySelector('button[type="submit"]');
-    const raw = Object.fromEntries(new FormData(form).entries());
-    const data = {};
-    MODELOS[type].fields.forEach(([key]) => {
-      if (key in raw) data[key] = String(raw[key]).trim();
-    });
-    if (type === "multas") {
-      const amount = Number(data.importe);
-      if (!Number.isSafeInteger(amount) || amount < 1 || amount > 100000000) {
-        toast("El importe debe ser un número entero válido.",true);
-        return;
-      }
-      data.importe = amount;
-    }
-    const required = {
-      ciudadanos:["nombre","identificacion"],
-      detenciones:["nombre","agente","motivo"],
-      multas:["nombre","agente","motivo","importe"],
-      informes:["titulo","agente","descripcion"]
-    }[type];
-    if (required.some(k => data[k] === undefined || data[k] === "")) {
-      toast("Completa todos los campos obligatorios.",true);
-      return;
-    }
-    busy = true;
-    button.disabled = true;
-    try {
-      await db.collection(type).add({
-        ...data,
-        createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-        createdBy:usuario.uid,
-        createdByEmail:usuario.email || ""
-      });
-      form.reset();
-      toast(MODELOS[type].label+" guardado correctamente.");
-    } catch (err) {
-      console.error(err);
-      toast("No se pudo guardar. Comprueba tu acceso y las reglas de Firestore.",true);
-    } finally {
-      busy = false;
-      button.disabled = false;
-    }
-  });
-});
-
-document.addEventListener("click",async e => {
-  const btn = e.target.closest("[data-delete]");
-  if (!btn) return;
-  if (!perfil || perfil.role !== "admin") {
-    toast("Solo un administrador puede eliminar registros.",true);
-    return;
-  }
-  const type = btn.dataset.delete;
-  const id = btn.dataset.id;
-  if (!MODELOS[type] || !id) return;
-  if (!confirm("¿Eliminar este registro permanentemente? Esta acción no se puede deshacer.")) return;
-  btn.disabled = true;
-  try {
-    await db.collection(type).doc(id).delete();
-    toast("Registro eliminado.");
-  } catch (err) {
-    console.error(err);
-    toast("No se pudo eliminar. Revisa los permisos.",true);
-  } finally {
-    btn.disabled = false;
-  }
-});
-
-function exportCSV(type) {
-  const model = MODELOS[type];
-  const rows = filteredRows(type);
-  if (!rows.length) return toast("No hay registros para exportar.",true);
-  const columns = [...model.fields.map(([key,label])=>[key,label]),["createdAt","Fecha"],["createdByEmail","Agente que registró"]];
-  const quote = value => '"'+String(value ?? "").replace(/"/g,'""')+'"';
-  const lines = [
-    columns.map(([,label])=>quote(label)).join(","),
-    ...rows.map(row => columns.map(([key]) =>
-      quote(key==="createdAt" ? formatDate(row[key]) : row[key])
-    ).join(","))
-  ];
-  const blob = new Blob(["\uFEFF"+lines.join("\r\n")],{type:"text/csv;charset=utf-8;"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "BOTANICOS_"+type+"_"+new Date().toISOString().slice(0,10)+".csv";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  toast("Exportación CSV preparada.");
-}
-document.querySelectorAll("[data-export]").forEach(btn => {
-  btn.addEventListener("click",()=>exportCSV(btn.dataset.export));
-});
-
-if (CONFIG_INCOMPLETA) {
-  $("loginMessage").textContent = "Configuración pendiente: añade los valores de Firebase para activar el acceso.";
-  $("databaseStatus").textContent = "Pendiente de configuración";
-} else {
-  try {
-    firebase.initializeApp(firebaseConfig);
-    auth = firebase.auth();
-    db = firebase.firestore();
-
-    auth.onAuthStateChanged(async user => {
-      stopListeners();
-      usuario = user;
-      perfil = null;
-      if (!user) {
-        showLogin();
-        return;
-      }
-      try {
-        const doc = await db.collection("users").doc(user.uid).get();
-        const data = doc.data();
-        if (!doc.exists || !data || data.active !== true ||
-            !["admin","officer"].includes(data.role)) {
-          await auth.signOut();
-          showLogin("Esta cuenta no tiene autorización. Contacta al administrador.");
-          return;
-        }
-        perfil = data;
-        showApp();
-      } catch (err) {
-        console.error(err);
-        await auth.signOut();
-        showLogin("No se pudieron verificar los permisos. Comprueba las reglas de Firebase.");
-      }
-    });
-  } catch (err) {
-    console.error(err);
-    $("loginMessage").textContent = "No se pudo iniciar Firebase. Revisa firebaseConfig.";
-  }
-}
+})();
 </script>
 </body>
 </html>
